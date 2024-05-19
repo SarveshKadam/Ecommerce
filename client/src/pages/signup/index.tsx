@@ -1,8 +1,8 @@
-import axios from "axios";
 import { SyntheticEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserErrors } from "../../models/error";
 import { toast } from "react-toastify";
+import { UserErrors } from "../../models/error";
+import { axiosInstance } from "../../utilities";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -11,7 +11,7 @@ const SignUp = () => {
   const handleSubmit = async (event: SyntheticEvent) => {
     try {
       event.preventDefault();
-      const response = await axios.post("http://localhost:3001/user/signup", {
+      const response = await axiosInstance.post("/user/signup", {
         username,
         password,
       });

@@ -1,10 +1,10 @@
-import axios from "axios";
 import { SyntheticEvent, useState } from "react";
+import { useCookies } from "react-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { UserErrors } from "../../models/error";
-import { useCookies } from "react-cookie";
 import { useShopStore } from "../../store";
+import { axiosInstance } from "../../utilities";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -16,7 +16,7 @@ const Login = () => {
   const handleSubmit = async (event: SyntheticEvent) => {
     try {
       event.preventDefault();
-      const response = await axios.post("http://localhost:3001/user/signin", {
+      const response = await axiosInstance.post("/user/signin", {
         username,
         password,
       });

@@ -1,8 +1,8 @@
-import { create } from "zustand";
-import { devtools } from "zustand/middleware";
 import { produce } from "immer";
 import { toast } from "react-toastify";
-import axios from "axios";
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+import { axiosInstance } from "../../utilities";
 
 const initialState = {
   products: [],
@@ -14,7 +14,7 @@ const store = (set: (arg0: any) => void, get: any) => {
     fetchProducts: async (params) => {
       try {
         const { headers } = params;
-        const response = await axios.get("http://localhost:3001/product", {
+        const response = await axiosInstance.get("/product", {
           headers,
         });
         set(

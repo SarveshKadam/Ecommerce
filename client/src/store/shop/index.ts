@@ -1,4 +1,3 @@
-import axios from "axios";
 import { produce } from "immer";
 import { Cookies } from "react-cookie";
 import { toast } from "react-toastify";
@@ -6,6 +5,7 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { ProductErrors, UserErrors } from "../../models/error";
 import { IProduct } from "../../models/interface";
+import { axiosInstance } from "../../utilities";
 import useProductStore from "../products";
 
 const initialState = {
@@ -76,10 +76,8 @@ const store = (set: (arg0: any) => void, get: any) => {
       try {
         const cookies = new Cookies();
         const cookieValue = cookies.get("access_token");
-        const response = await axios.get(
-          `http://localhost:3001/user/available-money/${localStorage.getItem(
-            "userID"
-          )}`,
+        const response = await axiosInstance.get(
+          `/user/available-money/${localStorage.getItem("userID")}`,
           {
             headers: {
               authorization: cookieValue,
@@ -99,10 +97,8 @@ const store = (set: (arg0: any) => void, get: any) => {
       try {
         const cookies = new Cookies();
         const cookieValue = cookies.get("access_token");
-        const response = await axios.get(
-          `http://localhost:3001/product/purchased-items/${localStorage.getItem(
-            "userID"
-          )}`,
+        const response = await axiosInstance.get(
+          `/product/purchased-items/${localStorage.getItem("userID")}`,
           {
             headers: {
               authorization: cookieValue,
@@ -121,8 +117,8 @@ const store = (set: (arg0: any) => void, get: any) => {
     handleCheckout: async (params: any) => {
       try {
         const { headers, customerId, successCallback } = params;
-        const response = await axios.post(
-          "http://localhost:3001/product/checkout",
+        const response = await axiosInstance.post(
+          "/product/checkout",
           {
             customerId,
             cartItems: get().cartItems,
