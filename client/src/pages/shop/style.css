@@ -28,6 +28,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .product img {
@@ -58,4 +59,13 @@
   background-color: rgb(95, 94, 94);
   border: none;
   cursor: pointer;
+}
+
+.stockQuantity {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+  background: lightgray;
+  opacity: 0.2;
 }

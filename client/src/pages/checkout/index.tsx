@@ -5,11 +5,13 @@ import { IProduct } from "../../models/interface";
 import { useProductStore, useShopStore } from "../../store";
 import { CartItem } from "./cartItem";
 import "./style.css";
+import { useGetToken } from "../../hooks/useGetToken";
 
 const CheckoutPage = () => {
-  const { getCartItemCount, getTotalCartAmount, checkout } = useShopStore();
+  const { getCartItemCount, getTotalCartAmount, handleCheckout } =
+    useShopStore();
   const totalAmount = getTotalCartAmount();
-
+  const { headers } = useGetToken();
   const { products } = useProductStore();
 
   const navigate = useNavigate();
@@ -28,15 +30,18 @@ const CheckoutPage = () => {
       </div>
       {totalAmount > 0 ? (
         <div className="checkout">
-          <p> Subtotal: ${totalAmount} </p>
+          <p> Subtotal: ₹{totalAmount} </p>
           <button onClick={() => navigate("/")}> Continue Shopping </button>
           <button
             onClick={() => {
-              checkout(localStorage.getItem("userID"));
+              handleCheckout({
+                customerId: localStorage.getItem("userID"),
+                headers,
+                successCallback: () => navigate("/"),
+              });
             }}
           >
-            {" "}
-            Checkout{" "}
+            Checkout
           </button>
         </div>
       ) : (

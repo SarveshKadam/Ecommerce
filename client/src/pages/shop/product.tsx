@@ -7,12 +7,14 @@ interface Props {
 }
 
 export const Product = (props: Props) => {
-  const { _id, productName, description, price, stockQuantity, imageURL } =
+  const { _id, productName, description, price, stock, imageURL } =
     props.product;
-  const { addToCart, cartItemCount } = useShopStore(useShallow((state) => ({
-    addToCart: state.addToCart,
-    cartItemCount: state.getCartItemCount(_id)
-  })));
+  const { addToCart, cartItemCount } = useShopStore(
+    useShallow((state) => ({
+      addToCart: state.addToCart,
+      cartItemCount: state.getCartItemCount(_id),
+    }))
+  );
 
   return (
     <div className="product">
@@ -20,15 +22,21 @@ export const Product = (props: Props) => {
       <div className="description">
         <h3>{productName}</h3>
         <p>{description}</p>
-        <p> ${price}</p>
+        <p> ₹{price}</p>
       </div>
-      <button className="addToCartBttn" onClick={() => addToCart(_id)}>
+      <button
+        disabled={stock === 0}
+        className="addToCartBttn"
+        onClick={() => addToCart(_id)}
+      >
         Add To Cart {cartItemCount > 0 && <> ({cartItemCount})</>}
       </button>
 
-      <div className="stockQuantity">
-        {stockQuantity === 0 && <h1> OUT OF STOCK</h1>}
-      </div>
+      {stock === 0 && (
+        <div className="stockQuantity">
+          <h1> OUT OF STOCK</h1>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,12 +1,13 @@
 import axios from "axios";
 import { SyntheticEvent, useState } from "react";
-import { Link } from "react-router-dom";
-import { UserErrors } from "../../error";
+import { Link, useNavigate } from "react-router-dom";
+import { UserErrors } from "../../models/error";
 import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const handleSubmit = async (event: SyntheticEvent) => {
     try {
       event.preventDefault();
@@ -16,6 +17,7 @@ const SignUp = () => {
       });
       if(response.status === 200) {
         toast.success(response.data.message)
+        navigate("/login")
       }
     } catch (error) {
       if (error.response.data.type === UserErrors.USER_ALREADY_EXISTS) {

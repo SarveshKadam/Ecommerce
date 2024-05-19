@@ -2,14 +2,16 @@ import axios from "axios";
 import { SyntheticEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { UserErrors } from "../../error";
+import { UserErrors } from "../../models/error";
 import { useCookies } from "react-cookie";
+import { useShopStore } from "../../store";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setCookies] = useCookies(["access_token"]);
+  const { setIsAuthenticated } = useShopStore();
   const navigate = useNavigate();
   const handleSubmit = async (event: SyntheticEvent) => {
     try {
@@ -21,10 +23,10 @@ const Login = () => {
       if (response.status === 200) {
         setCookies("access_token", response.data.token);
         localStorage.setItem("userID", response.data.userID);
+        setIsAuthenticated(true);
         navigate("/");
       }
     } catch (error) {
-      console.log("r", error);
       if (error.response.data.type === UserErrors.NO_USER_FOUND) {
         toast.error("No user found");
       } else if (error.response.data.type === UserErrors.WRONG_CREDENTIALS) {

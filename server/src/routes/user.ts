@@ -47,7 +47,7 @@ router.post("/signin", async (req: Request, res: Response) => {
     const token = jwt.sign({ id: user._id }, "secret123");
     return res.json({ token, userID: user._id });
   } catch (error) {
-    return res.status(500).json({
+    res.status(500).json({
       type: error,
     });
   }
@@ -70,5 +70,28 @@ export const verifyToken = (
     return res.sendStatus(401);
   }
 };
+
+router.get(
+  "/available-money/:userID",
+  verifyToken,
+  async (req: Request, res: Response) => {
+    try {
+      const { userID } = req.params;
+      const user = await User.findById(userID);
+      if (!user) {
+        return res.status(400).json({
+          error: UserErrors.NO_USER_FOUND,
+        });
+      }
+      res.json({
+        availableMoney: user.availableAmount,
+      });
+    } catch (error) {
+      res.status(500).json({
+        type: error,
+      });
+    }
+  }
+);
 
 export { router as userRouter };
