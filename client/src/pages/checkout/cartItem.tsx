@@ -1,0 +1,33 @@
+import { IProduct } from "../../models/interface";
+import { useShopStore } from "../../store";
+
+interface Props {
+  data: IProduct;
+}
+
+export const CartItem = (props: Props) => {
+  const { _id, productName, description, price, imageURL } = props.data;
+  const { getCartItemCount, addToCart, removeFromCart, updateCartItemCount } =
+    useShopStore();
+
+  const cartItemCount = getCartItemCount(_id);
+  return (
+    <div className="cartItem">
+      <img src={imageURL} alt={description} />
+      <div className="description">
+        <p>
+          <b>{productName}</b>
+        </p>
+        <p> Price: ${price}</p>
+        <div className="countHandler">
+          <button onClick={() => removeFromCart(_id)}> - </button>
+          <input
+            value={cartItemCount}
+            onChange={(e) => updateCartItemCount(Number(e.target.value), _id)}
+          />
+          <button onClick={() => addToCart(_id)}> + </button>
+        </div>
+      </div>
+    </div>
+  );
+};
