@@ -13,6 +13,10 @@ This is a MERN (MongoDB, Express.js, React.js, Node.js) full-stack e-commerce ap
 - Zustand store for managing global state
 - Responsive design for mobile and desktop devices
 
+## Live Demo
+
+A live demo of the project is available [here](https://ecommerce-jgeu.vercel.app/login), allowing you to explore its features and functionalities.
+
 ## Technologies Used
 
 - **Frontend**:
